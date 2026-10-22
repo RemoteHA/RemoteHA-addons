@@ -1,0 +1,5 @@
+# Home Assistant add-on repository manifest. Publish the addon/ folder as its own git repo
+# so users can add it under Settings > Add-ons > Add-on Store > Repositories.
+name: RemoteHA add-ons
+url: https://github.com/RemoteHA/RemoteHA-addons
+maintainer: RemoteHA
