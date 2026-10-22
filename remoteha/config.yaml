@@ -1,0 +1,24 @@
+name: RemoteHA
+version: "0.1.0"
+image: ghcr.io/remoteha/{arch}-addon-remoteha
+slug: remoteha
+description: Secure remote access to Home Assistant, no port forwarding needed.
+url: https://github.com/RemoteHA/RemoteHA-addons
+arch:
+  - aarch64
+  - amd64
+  - armv7
+startup: services
+boot: auto
+init: true
+# Needed to read the Home Assistant version from the Supervisor (/core/info).
+hassio_api: true
+hassio_role: default
+options:
+  pairing_code: ""
+  api_url: "https://app.example.com"
+  ha_url: "http://homeassistant:8123"
+schema:
+  pairing_code: str?
+  api_url: url
+  ha_url: url

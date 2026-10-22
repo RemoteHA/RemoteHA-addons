@@ -20,7 +20,25 @@ Or add it manually:
 
 ## Running without Home Assistant OS
 
-If you run Home Assistant in Docker, without the Supervisor, run the agent next to it. The image is `ghcr.io/remoteha/remoteha-agent`. Your RemoteHA dashboard shows the exact command.
+If you run Home Assistant in Docker, without the Supervisor, run the agent as a container on the same Docker network as Home Assistant:
+
+```sh
+docker run -d --name remoteha --restart unless-stopped \
+  --network <your-home-assistant-network> \
+  -e PAIRING_CODE=<code from your RemoteHA dashboard> \
+  -e HA_URL=http://homeassistant:8123 \
+  -v remoteha-data:/data \
+  ghcr.io/remoteha/remoteha-agent:latest
+```
+
+Your RemoteHA dashboard shows the exact command with your pairing code. Then let Home Assistant trust the agent: under **Settings → System → Network → HTTP server → Reverse proxy**, turn on **Trust X-Forwarded-For** and add your Docker network's subnet under **Trusted proxies**.
+
+## Images
+
+| Image | Used by |
+| --- | --- |
+| `ghcr.io/remoteha/{amd64,aarch64,armv7}-addon-remoteha` | The Home Assistant app (pulled by the Supervisor) |
+| `ghcr.io/remoteha/remoteha-agent` | Docker installs (multi-arch) |
 
 ---
 
