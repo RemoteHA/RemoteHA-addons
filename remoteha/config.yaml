@@ -1,5 +1,5 @@
 name: RemoteHA
-version: "0.1.0"
+version: "0.2.0"
 image: ghcr.io/remoteha/{arch}-addon-remoteha
 slug: remoteha
 description: Secure remote access to Home Assistant, no port forwarding needed.
@@ -11,14 +11,18 @@ arch:
 startup: services
 boot: auto
 init: true
-# Needed to read the Home Assistant version from the Supervisor (/core/info).
+# Needed to read Home Assistant's version, port and SSL setting from the Supervisor (/core/info).
 hassio_api: true
 hassio_role: default
+# Needed to list pending updates (Core's update entities, through the Supervisor's /core/api proxy).
+homeassistant_api: true
+# Schema order is form order. ha_url is str? (not url?) so it can default to "" and stay
+# visible; the agent validates it. api_url has no default, so the form hides it behind
+# "Show unused optional configuration options".
 options:
   pairing_code: ""
-  api_url: "https://app.example.com"
-  ha_url: "http://homeassistant:8123"
+  ha_url: ""
 schema:
   pairing_code: str?
-  api_url: url
-  ha_url: url
+  ha_url: str?
+  api_url: url?

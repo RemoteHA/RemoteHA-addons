@@ -2,9 +2,9 @@ configuration:
   pairing_code:
     name: Pairing code
     description: One-time code from the RemoteHA dashboard (e.g. K7QM-2XPA).
-  api_url:
-    name: Service URL
-    description: RemoteHA service URL. Only change this for development.
   ha_url:
-    name: Home Assistant URL
-    description: How the app reaches Home Assistant, e.g. http://homeassistant:8123.
+    name: Local Home Assistant URL
+    description: Where this app reaches Home Assistant on your network. Leave empty to detect it from Home Assistant's HTTP settings.
+  api_url:
+    name: Service URL (advanced)
+    description: Leave unset to use the RemoteHA service. Only change this for development or testing.

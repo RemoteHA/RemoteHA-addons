@@ -1,6 +1,6 @@
 # RemoteHA
 
-Connects this Home Assistant to the RemoteHA service. It reports status for monitoring (free plan) and, with a Pro subscription, makes Home Assistant reachable at a private HTTPS URL. All connections are outbound, so you don't need port forwarding.
+Connects this Home Assistant to the RemoteHA service. It reports status for monitoring (free plan) and, with an Individual or Family subscription, makes Home Assistant reachable at a private HTTPS URL. All connections are outbound, so you don't need port forwarding.
 
 ## Setup
 
@@ -28,5 +28,9 @@ Pairing codes can only be used once. After pairing, the app stores its credentia
 | Option | Description |
 | --- | --- |
 | `pairing_code` | One-time code from the dashboard. |
-| `api_url` | RemoteHA service URL. Change this only for development. |
-| `ha_url` | How the app reaches Home Assistant. The default `http://homeassistant:8123` works for most setups. Use `https://` if HA has SSL configured. |
+| `ha_url` | **Local Home Assistant URL.** Where the app reaches Home Assistant on your network. Leave it empty and the app uses Home Assistant's own port and SSL setting, e.g. `http://homeassistant:8123`. Set it only if that address doesn't work for your setup. |
+| `api_url` | **Service URL (advanced).** Hidden unless you turn on **Show unused optional configuration options**. Leave it unset; change it only for development or testing. |
+
+## Pending updates
+
+The dashboard shows which updates Home Assistant has waiting: the operating system, Core, the Supervisor, apps, HACS, device firmware and other integrations. It's the same list as **Settings → Updates**, so updates you skipped aren't shown. The app reads it through the Home Assistant API every few minutes and sends each update's name and versions to RemoteHA. It doesn't install anything. Install updates in Home Assistant as usual.

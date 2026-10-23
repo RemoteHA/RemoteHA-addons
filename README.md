@@ -33,6 +33,22 @@ docker run -d --name remoteha --restart unless-stopped \
 
 Your RemoteHA dashboard shows the exact command with your pairing code. Then let Home Assistant trust the agent: under **Settings → System → Network → HTTP server → Reverse proxy**, turn on **Trust X-Forwarded-For** and add your Docker network's subnet under **Trusted proxies**.
 
+### Optional: show Home Assistant's version and pending updates
+
+The agent needs an access token from Home Assistant to read these. Without one, everything else works. The Home Assistant app doesn't need this step.
+
+1. In Home Assistant, sign in as an **administrator**. Click your name at the bottom of the sidebar to open your profile, then open the **Security** tab.
+2. Scroll to **Long-lived access tokens**, click **Create token** and name it `RemoteHA`. Copy the token right away: Home Assistant shows it only once.
+3. Give it to the agent as `HA_TOKEN`. Environment variables can't be added to a running container, so recreate it:
+
+   ```sh
+   docker rm -f remoteha
+   ```
+
+   Then run the `docker run` command above again with `-e HA_TOKEN=<token> \` added below the `HA_URL` line. The agent stays paired, because its credentials are on the `remoteha-data` volume. With Docker Compose, add `HA_TOKEN: <token>` under the agent's `environment:` and run `docker compose up -d`.
+
+The token can do anything your account can. The agent only uses it to read Home Assistant's version and update list. You can delete it on the same **Security** tab at any time.
+
 ## Images
 
 | Image | Used by |
