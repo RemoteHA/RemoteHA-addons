@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.2
+
+- Fixed remote access when another Cloudflare tunnel (cloudflared) runs on the same machine with host networking, as on a Synology NAS. The app's connector could fail to start while RemoteHA showed it as running, and the address returned Cloudflare error 1033.
+
+## 0.2.1
+
+- The app now tells RemoteHA whether the Supervisor manages Home Assistant. Without it (Home Assistant Container), Home Assistant never lists Core updates, so RemoteHA checks for new releases itself and shows them in your dashboard.
+
 ## 0.2.0
 
 - Your RemoteHA dashboard now shows pending updates for this Home Assistant: the operating system, Core, the Supervisor, apps, HACS, device firmware and other integrations, the same list as **Settings → Updates**. Updates you skipped in Home Assistant aren't shown. The app reports each update's name and versions every few minutes.

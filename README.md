@@ -49,6 +49,74 @@ The agent needs an access token from Home Assistant to read these. Without one, 
 
 The token can do anything your account can. The agent only uses it to read Home Assistant's version and update list. You can delete it on the same **Security** tab at any time.
 
+## Synology NAS
+
+The agent runs as a container on the NAS, using the NAS's own network. The `HA_URL` below assumes Home Assistant runs in a container on the same NAS. If it runs on another device, use that device's address instead, for example `http://192.168.1.20:8123`. If you run Home Assistant OS in **Virtual Machine Manager**, install the RemoteHA app in Home Assistant instead (see [Installation](#installation)).
+
+Get a pairing code from your RemoteHA dashboard first. It's valid for 15 minutes. The dashboard's **Synology NAS** tab shows these steps with your code filled in.
+
+### DSM 7.2 and later (Container Manager)
+
+1. Install **Container Manager** from the Package Center if you haven't already.
+2. In Container Manager, open **Project** and click **Create**. Name it `remoteha`, set the path to a new folder such as `docker/remoteha`, and choose **Create docker-compose.yml** as the source.
+3. Paste this, with your pairing code, then click **Next** until you reach **Done**. Container Manager downloads the agent and starts it.
+
+   ```yaml
+   services:
+     remoteha:
+       image: ghcr.io/remoteha/remoteha-agent:latest
+       container_name: remoteha
+       network_mode: host
+       restart: unless-stopped
+       environment:
+         PAIRING_CODE: <code from your RemoteHA dashboard>
+         HA_URL: http://127.0.0.1:8123
+       volumes:
+         - ./data:/data
+   ```
+
+### DSM 7.0 and 7.1 (Docker package)
+
+1. Install **Docker** from the Package Center if you haven't already.
+2. Go to **Control Panel → Terminal & SNMP** and turn on **Enable SSH service**.
+3. On your computer, open a terminal and sign in with an administrator account: `ssh <your-dsm-user>@<your-nas-ip>`.
+4. Run this, with your pairing code, and enter your DSM password when asked. The agent then also appears in the Docker package.
+
+   ```sh
+   sudo docker run -d --name remoteha --restart unless-stopped \
+     --network host \
+     -e PAIRING_CODE=<code from your RemoteHA dashboard> \
+     -e HA_URL=http://127.0.0.1:8123 \
+     -v remoteha-data:/data \
+     ghcr.io/remoteha/remoteha-agent:latest
+   ```
+
+5. You can turn the SSH service off again afterwards.
+
+### Then let Home Assistant trust the agent
+
+Under **Settings → System → Network → HTTP server → Reverse proxy**, turn on **Trust X-Forwarded-For** and add `127.0.0.1` under **Trusted proxies** if Home Assistant runs on the NAS, or the NAS's own IP address if it runs on another device.
+
+To show Home Assistant's version and pending updates, create a token as described [above](#optional-show-home-assistants-version-and-pending-updates). In Container Manager, stop the `remoteha` project, add `HA_TOKEN: <token>` under `environment:` in its YAML, then build it again. With the Docker package, follow the `docker run` steps above over SSH, with `sudo` before each command.
+
+The agent works on Synology models that can run Container Manager or the Docker package.
+
+## Updating the agent
+
+Your RemoteHA dashboard says when a new version of the agent is available. The agent stays paired when you update it, because its credentials are on its data volume.
+
+- **Home Assistant app:** in Home Assistant, go to **Settings → Apps**, open **RemoteHA** and click **Update**. If there's no Update button yet, open **Settings → Apps → Install app → ⋮ → Check for updates** first.
+- **Docker Compose:** in the folder with your `docker-compose.yml`, run `docker compose pull && docker compose up -d`.
+- **`docker run`:** download the new version and remove the old container, then run your `docker run` command again with the same settings (`docker inspect remoteha` shows them). The old pairing code in it is ignored.
+
+  ```sh
+  docker pull ghcr.io/remoteha/remoteha-agent:latest
+  docker rm -f remoteha
+  ```
+
+- **Synology, Container Manager:** open **Project**, select **remoteha** and choose **Action → Clean**. Then open **Image**, select `ghcr.io/remoteha/remoteha-agent` and click **Delete**. Back in **Project**, select **remoteha** and choose **Action → Build**: Container Manager downloads the new version and starts it. Or, over SSH in the project's folder: `sudo docker compose pull && sudo docker compose up -d`.
+- **Synology, Docker package:** follow the `docker run` steps above over SSH, with `sudo` before each command.
+
 ## Images
 
 | Image | Used by |
