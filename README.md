@@ -35,7 +35,7 @@ Your RemoteHA dashboard shows the exact command with your pairing code. Then let
 
 ### Optional: show Home Assistant's version and pending updates
 
-The agent needs an access token from Home Assistant to read these. Without one, everything else works. The Home Assistant app doesn't need this step.
+The agent needs an access token from Home Assistant to read these, and for the dashboard's health checks (failed integrations, Repairs, log errors, backups). Without one, everything else works. The Home Assistant app doesn't need this step.
 
 1. In Home Assistant, sign in as an **administrator**. Click your name at the bottom of the sidebar to open your profile, then open the **Security** tab.
 2. Scroll to **Long-lived access tokens**, click **Create token** and name it `RemoteHA`. Copy the token right away: Home Assistant shows it only once.
@@ -47,7 +47,9 @@ The agent needs an access token from Home Assistant to read these. Without one, 
 
    Run the command you copied with `-e HA_TOKEN=<token>` added before `ghcr.io/remoteha/remoteha-agent:latest`. The agent stays paired, because its credentials are on the `remoteha-data` volume. With Docker Compose, add `HA_TOKEN: <token>` under the agent's `environment:` and run `docker compose up -d`.
 
-The token can do anything your account can. The agent only uses it to read Home Assistant's version and update list. You can delete it on the same **Security** tab at any time.
+The token can do anything your account can. The agent only uses it to read: Home Assistant's version, its update list and what the health checks need. It never changes anything. You can delete it on the same **Security** tab at any time.
+
+To keep Home Assistant's log private, add `-e SHARE_LOGS=false`. The agent then doesn't send log errors, and the other health checks keep working.
 
 ## Synology NAS
 
@@ -111,7 +113,7 @@ Your RemoteHA dashboard says when a new version of the agent is available. The a
   1. Print the command that starts the agent with its current settings, and copy what it prints:
 
      ```sh
-     docker inspect remoteha --format 'docker run -d --name remoteha --restart unless-stopped --network {{.HostConfig.NetworkMode}}{{range .Config.Env}}{{if eq (index (split . `=`) 0) `HA_URL` `HA_TOKEN` `API_URL` `LOG_LEVEL`}} -e {{.}}{{end}}{{end}}{{range .Mounts}} -v {{if .Name}}{{.Name}}{{else}}{{.Source}}{{end}}:{{.Destination}}{{end}} ghcr.io/remoteha/remoteha-agent:latest'
+     docker inspect remoteha --format 'docker run -d --name remoteha --restart unless-stopped --network {{.HostConfig.NetworkMode}}{{range .Config.Env}}{{if eq (index (split . `=`) 0) `HA_URL` `HA_TOKEN` `API_URL` `LOG_LEVEL` `SHARE_LOGS`}} -e {{.}}{{end}}{{end}}{{range .Mounts}} -v {{if .Name}}{{.Name}}{{else}}{{.Source}}{{end}}:{{.Destination}}{{end}} ghcr.io/remoteha/remoteha-agent:latest'
      ```
 
   2. Download the new version and remove the old container:

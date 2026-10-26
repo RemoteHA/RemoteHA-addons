@@ -5,6 +5,9 @@ configuration:
   ha_url:
     name: Local Home Assistant URL
     description: Where this app reaches Home Assistant on your network. Leave empty to detect it from Home Assistant's HTTP settings.
+  share_logs:
+    name: Share log errors
+    description: Send errors from Home Assistant's log to RemoteHA, so your dashboard can show them. Turn off to keep the log private; the other health checks keep working.
   api_url:
     name: Service URL (advanced)
     description: Leave unset to use the RemoteHA service. Only change this for development or testing.
