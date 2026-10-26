@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+
+- Updated the remote access connector (cloudflared) to 2026.10.4, which includes Cloudflare's latest security fixes.
+
 ## 0.3.1
 
 - Your RemoteHA dashboard now tells unavailable devices apart. Devices that are just away from your network, such as phones and laptops tracked by your router, are no longer listed. Battery-powered devices that stop responding are flagged as a problem, because their battery may be empty. Devices that have been gone for over a week are grouped in one note, and you can hide the ones you don't care about. For this, the app now also sends each unavailable device's Home Assistant ID, and whether it has a battery or is tracked on your network.

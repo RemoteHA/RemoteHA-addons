@@ -1,5 +1,5 @@
 name: RemoteHA
-version: "0.3.1"
+version: "0.3.2"
 image: ghcr.io/remoteha/{arch}-addon-remoteha
 slug: remoteha
 description: Secure remote access to Home Assistant, no port forwarding needed.
