@@ -39,13 +39,13 @@ The agent needs an access token from Home Assistant to read these. Without one, 
 
 1. In Home Assistant, sign in as an **administrator**. Click your name at the bottom of the sidebar to open your profile, then open the **Security** tab.
 2. Scroll to **Long-lived access tokens**, click **Create token** and name it `RemoteHA`. Copy the token right away: Home Assistant shows it only once.
-3. Give it to the agent as `HA_TOKEN`. Environment variables can't be added to a running container, so recreate it:
+3. Give it to the agent as `HA_TOKEN`. Environment variables can't be added to a running container, so recreate it. Print the command that starts the agent with its current settings (the same one as in [Updating the agent](#updating-the-agent)), and copy what it prints. Then remove the container:
 
    ```sh
    docker rm -f remoteha
    ```
 
-   Then run the `docker run` command above again with `-e HA_TOKEN=<token> \` added below the `HA_URL` line. The agent stays paired, because its credentials are on the `remoteha-data` volume. With Docker Compose, add `HA_TOKEN: <token>` under the agent's `environment:` and run `docker compose up -d`.
+   Run the command you copied with `-e HA_TOKEN=<token>` added before `ghcr.io/remoteha/remoteha-agent:latest`. The agent stays paired, because its credentials are on the `remoteha-data` volume. With Docker Compose, add `HA_TOKEN: <token>` under the agent's `environment:` and run `docker compose up -d`.
 
 The token can do anything your account can. The agent only uses it to read Home Assistant's version and update list. You can delete it on the same **Security** tab at any time.
 
@@ -107,15 +107,24 @@ Your RemoteHA dashboard says when a new version of the agent is available. The a
 
 - **Home Assistant app:** in Home Assistant, go to **Settings → Apps**, open **RemoteHA** and click **Update**. If there's no Update button yet, open **Settings → Apps → Install app → ⋮ → Check for updates** first.
 - **Docker Compose:** in the folder with your `docker-compose.yml`, run `docker compose pull && docker compose up -d`.
-- **`docker run`:** download the new version and remove the old container, then run your `docker run` command again with the same settings (`docker inspect remoteha` shows them). The old pairing code in it is ignored.
+- **`docker run`:**
+  1. Print the command that starts the agent with its current settings, and copy what it prints:
 
-  ```sh
-  docker pull ghcr.io/remoteha/remoteha-agent:latest
-  docker rm -f remoteha
-  ```
+     ```sh
+     docker inspect remoteha --format 'docker run -d --name remoteha --restart unless-stopped --network {{.HostConfig.NetworkMode}}{{range .Config.Env}}{{if eq (index (split . `=`) 0) `HA_URL` `HA_TOKEN` `API_URL` `LOG_LEVEL`}} -e {{.}}{{end}}{{end}}{{range .Mounts}} -v {{if .Name}}{{.Name}}{{else}}{{.Source}}{{end}}:{{.Destination}}{{end}} ghcr.io/remoteha/remoteha-agent:latest'
+     ```
+
+  2. Download the new version and remove the old container:
+
+     ```sh
+     docker pull ghcr.io/remoteha/remoteha-agent:latest
+     docker rm -f remoteha
+     ```
+
+  3. Run the command you copied. It includes your Home Assistant token if you set one, so don't share it.
 
 - **Synology, Container Manager:** open **Project**, select **remoteha** and choose **Action → Clean**. Then open **Image**, select `ghcr.io/remoteha/remoteha-agent` and click **Delete**. Back in **Project**, select **remoteha** and choose **Action → Build**: Container Manager downloads the new version and starts it. Or, over SSH in the project's folder: `sudo docker compose pull && sudo docker compose up -d`.
-- **Synology, Docker package:** follow the `docker run` steps above over SSH, with `sudo` before each command.
+- **Synology, Docker package:** follow the `docker run` steps above over SSH, with `sudo` before each `docker`, including the one inside the quotes.
 
 ## Images
 

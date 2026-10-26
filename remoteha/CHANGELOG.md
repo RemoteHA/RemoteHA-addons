@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.3
+
+- The app now tells RemoteHA whether it runs as a Home Assistant app or in Docker, so your dashboard shows only the instructions that apply to it.
+
 ## 0.2.2
 
 - Fixed remote access when another Cloudflare tunnel (cloudflared) runs on the same machine with host networking, as on a Synology NAS. The app's connector could fail to start while RemoteHA showed it as running, and the address returned Cloudflare error 1033.
