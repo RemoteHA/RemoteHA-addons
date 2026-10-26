@@ -32,12 +32,16 @@ Pairing codes can only be used once. After pairing, the app stores its credentia
 | `share_logs` | **Share log errors.** On by default. Turn it off to keep Home Assistant's log private: the app then doesn't send log errors, and the other health checks keep working. |
 | `api_url` | **Service URL (advanced).** Hidden unless you turn on **Show unused optional configuration options**. Leave it unset; change it only for development or testing. |
 
+## Restarting or updating over remote access
+
+Remote access runs through this app, so restarting, stopping or updating it cuts your connection while you're using Home Assistant from your RemoteHA URL. Home Assistant may then show *Failed to restart app: Unknown error, see supervisor logs*, because the reply never reaches your browser. The restart itself still goes through: the page reconnects within a minute once the app is running again. To avoid the message, restart the app from your local network.
+
 ## Pending updates
 
 The dashboard shows which updates Home Assistant has waiting: the operating system, Core, the Supervisor, apps, HACS, device firmware and other integrations. It's the same list as **Settings → Updates**, so updates you skipped aren't shown. The app reads it through the Home Assistant API every few minutes and sends each update's name and versions to RemoteHA. It doesn't install anything. Install updates in Home Assistant as usual.
 
 ## Health checks
 
-The dashboard also shows problems that are easy to miss until something stops working: integrations that failed to load or can't connect, recovery and safe mode, open Repairs (and which ones the next Core release breaks), errors in the log, backups that failed or are missing, apps that are set to start at boot but aren't running, low disk space, issues the Supervisor found, low batteries and unavailable devices. When it starts and every 15 minutes after that, the app reads them from Home Assistant and the Supervisor and sends RemoteHA what it needs to show them: the names of the integrations, apps and devices involved, Repairs' titles, battery levels, disk space, your backup schedule and locations (never the backup password), and the error messages Home Assistant gives.
+The dashboard also shows problems that are easy to miss until something stops working: integrations that failed to load or can't connect, recovery and safe mode, open Repairs (and which ones the next Core release breaks), errors in the log, backups that failed or are missing, apps that are set to start at boot but aren't running, low disk space, issues the Supervisor found, low batteries and unavailable devices. When it starts and every 15 minutes after that, the app reads them from Home Assistant and the Supervisor and sends RemoteHA what it needs to show them: the names of the integrations, apps and devices involved (and, for devices that are unavailable, their Home Assistant ID and whether they have a battery or are tracked on your network), Repairs' titles, battery levels, disk space, your backup schedule and locations (never the backup password), and the error messages Home Assistant gives.
 
 Log errors are sent without IP addresses, URLs, email addresses or anything that looks like a token or key, and cut to 300 characters. Only errors and critical messages are sent, at most 20. To keep the log private, turn off `share_logs`. The app doesn't change anything in Home Assistant.

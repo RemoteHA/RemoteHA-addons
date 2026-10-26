@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+- Your RemoteHA dashboard now tells unavailable devices apart. Devices that are just away from your network, such as phones and laptops tracked by your router, are no longer listed. Battery-powered devices that stop responding are flagged as a problem, because their battery may be empty. Devices that have been gone for over a week are grouped in one note, and you can hide the ones you don't care about. For this, the app now also sends each unavailable device's Home Assistant ID, and whether it has a battery or is tracked on your network.
+
 ## 0.3.0
 
 - Your RemoteHA dashboard now checks this Home Assistant's health, and shows problems that are easy to miss until something stops working: integrations that failed to load or can't connect, recovery and safe mode, apps that stopped although they start at boot, low disk space, issues the Supervisor found, low batteries and unavailable devices. It also shows open Repairs, with a warning before updating Core when the new release breaks one of them, errors in Home Assistant's log, and backups that failed, are missing, or are only stored on this device. The app reads these when it starts and every 15 minutes after that.
