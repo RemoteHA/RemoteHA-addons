@@ -1,6 +1,8 @@
 # RemoteHA apps for Home Assistant
 
-This is the Home Assistant app repository (formerly called an add-on repository) for [RemoteHA](https://github.com/RemoteHA). It gives you secure remote access to Home Assistant without port forwarding.
+This is the Home Assistant app repository (formerly called an add-on repository) for [RemoteHA](https://remoteha.app), a service that monitors your Home Assistant and gives it secure remote access without port forwarding.
+
+**You need a RemoteHA account to use it.** [Sign up at remoteha.app](https://remoteha.app): monitoring is free, and remote access comes with a paid plan. Your dashboard gives you the pairing code the app asks for.
 
 ## Installation
 
@@ -32,6 +34,8 @@ docker run -d --name remoteha --restart unless-stopped \
 ```
 
 Your RemoteHA dashboard shows the exact command with your pairing code. Then let Home Assistant trust the agent: under **Settings → System → Network → HTTP server → Reverse proxy**, turn on **Trust X-Forwarded-For** and add your Docker network's subnet under **Trusted proxies**.
+
+The agent keeps its credentials on its data volume (`remoteha-data` here). Treat it like a password: keep it out of backups you share or store unencrypted. If someone may have copied it, pair the agent again with a new code from your dashboard. That disconnects every other copy.
 
 ### Optional: show Home Assistant's version and pending updates
 

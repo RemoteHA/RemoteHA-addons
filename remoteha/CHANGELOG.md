@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3
+
+- Backups of Home Assistant no longer contain this app's connection to RemoteHA, so anyone who gets hold of a backup can't use it to connect as your instance. After restoring a backup, pair the app again with a new pairing code from your dashboard.
+- Updated the remote access connector (cloudflared) to 2026.10.5, which includes Cloudflare's latest security fixes.
+
 ## 0.3.2
 
 - Updated the remote access connector (cloudflared) to 2026.10.4, which includes Cloudflare's latest security fixes.

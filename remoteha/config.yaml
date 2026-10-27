@@ -1,5 +1,5 @@
 name: RemoteHA
-version: "0.3.2"
+version: "0.3.3"
 image: ghcr.io/remoteha/{arch}-addon-remoteha
 slug: remoteha
 description: Secure remote access to Home Assistant, no port forwarding needed.
@@ -16,6 +16,10 @@ hassio_api: true
 hassio_role: default
 # Needed to list pending updates (Core's update entities, through the Supervisor's /core/api proxy).
 homeassistant_api: true
+# The agent's credentials (agent/internal/state) stay out of backups: whoever holds a backup could otherwise
+# connect as this instance. After a restore, pair again. Matched against the file name (and its .tmp).
+backup_exclude:
+  - "remoteha-state.json*"
 # Schema order is form order. ha_url is str? (not url?) so it can default to "" and stay
 # visible; the agent validates it. api_url has no default, so the form hides it behind
 # "Show unused optional configuration options".

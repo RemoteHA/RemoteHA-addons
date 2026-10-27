@@ -23,6 +23,8 @@ Connects this Home Assistant to the RemoteHA service. It reports status for moni
 
 Pairing codes can only be used once. After pairing, the app stores its credentials and reconnects automatically. To move the instance to another account, generate a new code and enter it here.
 
+The credentials aren't included in Home Assistant backups, so a backup can't be used to connect as your instance. After restoring one, pair the app again with a new code. Pairing again also disconnects any other copy of the app that was connected for this instance.
+
 ## Options
 
 | Option | Description |
