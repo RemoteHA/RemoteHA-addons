@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.4
+
+- The app keeps reporting to RemoteHA when Home Assistant is slow to answer, instead of showing as offline. A report that fails is sent again within a minute, rather than at the next scheduled one.
+- Remote access: fixed a rare case where the connector could stop responding after a very long log line. It now also finishes requests in flight when the app stops, and its error messages show on your dashboard and in the app log.
+- Log errors that are shared with RemoteHA now have IPv6 addresses removed in every form.
+
 ## 0.3.3
 
 - Backups of Home Assistant no longer contain this app's connection to RemoteHA, so anyone who gets hold of a backup can't use it to connect as your instance. After restoring a backup, pair the app again with a new pairing code from your dashboard.
