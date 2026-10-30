@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.5
+
+- Updated the remote access connector (cloudflared) to 2026.10.6, which includes Cloudflare's latest security fixes.
+- The app's image now checks every part it's built from against a fixed fingerprint, so a tampered download can't make it into a release.
+
 ## 0.3.4
 
 - The app keeps reporting to RemoteHA when Home Assistant is slow to answer, instead of showing as offline. A report that fails is sent again within a minute, rather than at the next scheduled one.

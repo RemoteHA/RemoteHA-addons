@@ -1,6 +1,6 @@
 # RemoteHA
 
-Connects this Home Assistant to the RemoteHA service. It reports status for monitoring (free plan) and, with an Individual or Family subscription, makes Home Assistant reachable at a private HTTPS URL. All connections are outbound, so you don't need port forwarding.
+Connects this Home Assistant to RemoteHA (Remote Home Automation), an independent service not affiliated with the Home Assistant project. It reports status for monitoring (free plan) and, with an Individual or Family subscription, makes Home Assistant reachable at a private HTTPS URL. All connections are outbound, so you don't need port forwarding.
 
 ## Setup
 

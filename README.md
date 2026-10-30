@@ -1,6 +1,6 @@
 # RemoteHA apps for Home Assistant
 
-This is the Home Assistant app repository (formerly called an add-on repository) for [RemoteHA](https://remoteha.app), a service that monitors your Home Assistant and gives it secure remote access without port forwarding.
+This is the Home Assistant app repository (formerly called an add-on repository) for [RemoteHA](https://remoteha.app) (Remote Home Automation), an independent service that monitors your Home Assistant and gives it secure remote access without port forwarding.
 
 **You need a RemoteHA account to use it.** [Sign up at remoteha.app](https://remoteha.app): monitoring is free, and remote access comes with a paid plan. Your dashboard gives you the pairing code the app asks for.
 
@@ -142,3 +142,5 @@ Your RemoteHA dashboard says when a new version of the agent is available. The a
 ---
 
 This repository is generated from the RemoteHA source on each release. Changes made directly here are overwritten.
+
+Home Assistant is a trademark of the Open Home Foundation. RemoteHA (Remote Home Automation) is not affiliated with or endorsed by the Home Assistant project, the Open Home Foundation or Nabu Casa.
